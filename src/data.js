@@ -33,11 +33,12 @@ export const item = [
         "zipcode": null,
         "townshipNameAlias": "Ahlone",
         "townshipGuid": "1f06a524-05f2-420a-ad87-fa812ffd5104",
-        "townshipNameMM": "အလုံ"
+        "townshipNameMM": "အလုံ",
+
     },
     {
         "id": 2,
-        "status": "Success",
+        "status": "Closed",
         "buyerFirstName": "Amon Soe",
         "townshipNameAlias": "Yankin",
         "sellQuantity": 5,
@@ -58,7 +59,7 @@ export const item = [
     },
     {
         "id": 5,
-        "status": "Success",
+        "status": "Closed",
         "buyerFirstName": "white",
         "townshipNameAlias": "Rhaine",
         "sellQuantity": 2,

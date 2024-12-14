@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -16,10 +16,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import Layout from "./Layout";
+import {
+	Inbox as InboxIcon,
+	Mail as MailIcon,
+	Inventory2,
+	ProductionQuantityLimitsSharp,
+} from "@mui/icons-material";
+import { useMediaQuery } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import Layout from "./Layout";
 
 const drawerWidth = 240;
 
@@ -49,61 +54,55 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 	alignItems: "center",
 	justifyContent: "flex-end",
 	padding: theme.spacing(0, 1),
-	// necessary for content to be below app bar
 	...theme.mixins.toolbar,
 }));
 
 const AppBar = styled(MuiAppBar, {
 	shouldForwardProp: (prop) => prop !== "open",
-})(({ theme }) => ({
+})(({ theme, open }) => ({
 	zIndex: theme.zIndex.drawer + 1,
 	transition: theme.transitions.create(["width", "margin"], {
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.leavingScreen,
 	}),
-	variants: [
-		{
-			props: ({ open }) => open,
-			style: {
-				marginLeft: drawerWidth,
-				width: `calc(100% - ${drawerWidth}px)`,
-				transition: theme.transitions.create(["width", "margin"], {
-					easing: theme.transitions.easing.sharp,
-					duration: theme.transitions.duration.enteringScreen,
-				}),
-			},
-		},
-	],
+	...(open && {
+		marginLeft: drawerWidth,
+		width: `calc(100% - ${drawerWidth}px)`,
+		transition: theme.transitions.create(["width", "margin"], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.enteringScreen,
+		}),
+	}),
 }));
 
 const Drawer = styled(MuiDrawer, {
 	shouldForwardProp: (prop) => prop !== "open",
-})(({ theme }) => ({
+})(({ theme, open }) => ({
 	width: drawerWidth,
 	flexShrink: 0,
 	whiteSpace: "nowrap",
 	boxSizing: "border-box",
-	variants: [
-		{
-			props: ({ open }) => open,
-			style: {
-				...openedMixin(theme),
-				"& .MuiDrawer-paper": openedMixin(theme),
-			},
-		},
-		{
-			props: ({ open }) => !open,
-			style: {
-				...closedMixin(theme),
-				"& .MuiDrawer-paper": closedMixin(theme),
-			},
-		},
-	],
+	...(open && {
+		...openedMixin(theme),
+		"& .MuiDrawer-paper": openedMixin(theme),
+	}),
+	...(!open && {
+		...closedMixin(theme),
+		"& .MuiDrawer-paper": closedMixin(theme),
+	}),
 }));
 
 export default function SideNavBar() {
 	const theme = useTheme();
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
+	const isSmallScreen = useMediaQuery("(max-width:1080px)");
+
+	useEffect(() => {
+		// Automatically close the drawer on small screens
+		if (isSmallScreen) {
+			setOpen(false);
+		}
+	}, [isSmallScreen]);
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -112,6 +111,13 @@ export default function SideNavBar() {
 	const handleDrawerClose = () => {
 		setOpen(false);
 	};
+
+	const icons = [
+		<InboxIcon />,
+		<MailIcon />,
+		<ProductionQuantityLimitsSharp />,
+		<Inventory2 />,
+	];
 
 	return (
 		<Box sx={{ display: "flex" }}>
@@ -125,12 +131,10 @@ export default function SideNavBar() {
 						aria-label='open drawer'
 						onClick={handleDrawerOpen}
 						edge='start'
-						sx={[
-							{
-								marginRight: 5,
-							},
-							open && { display: "none" },
-						]}>
+						sx={{
+							marginRight: 5,
+							...(open && { display: "none" }),
+						}}>
 						<MenuIcon />
 					</IconButton>
 					<Typography
@@ -155,59 +159,39 @@ export default function SideNavBar() {
 				</DrawerHeader>
 				<Divider />
 				<List>
-					{["Sales-Order", "Dashboard"].map((text, index) => (
-						<NavLink
-							to={`/${text}`}
-							key={text}>
-							<ListItem
-								disablePadding
-								sx={{ display: "block" }}>
-								<ListItemButton
-									sx={[
-										{
+					{["Sales-Order", "Dashboard", "Purchase", "Inventory"].map(
+						(text, index) => (
+							<NavLink
+								to={`/${text}`}
+								key={text}>
+								<ListItem
+									disablePadding
+									sx={{ display: "block" }}>
+									<ListItemButton
+										sx={{
 											minHeight: 48,
+											justifyContent: open ? "initial" : "center",
 											px: 2.5,
-										},
-										open
-											? {
-													justifyContent: "initial",
-											  }
-											: {
-													justifyContent: "center",
-											  },
-									]}>
-									<ListItemIcon
-										sx={[
-											{
+										}}>
+										<ListItemIcon
+											sx={{
 												minWidth: 0,
+												mr: open ? 3 : "auto",
 												justifyContent: "center",
-											},
-											open
-												? {
-														mr: 3,
-												  }
-												: {
-														mr: "auto",
-												  },
-										]}>
-										{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-									</ListItemIcon>
-									<ListItemText
-										primary={text}
-										sx={[
-											open
-												? {
-														opacity: 1,
-												  }
-												: {
-														opacity: 0,
-												  },
-										]}
-									/>
-								</ListItemButton>
-							</ListItem>
-						</NavLink>
-					))}
+											}}>
+											{icons[index]}
+										</ListItemIcon>
+										<ListItemText
+											primary={text}
+											sx={{
+												opacity: open ? 1 : 0,
+											}}
+										/>
+									</ListItemButton>
+								</ListItem>
+							</NavLink>
+						)
+					)}
 				</List>
 			</Drawer>
 			<Box

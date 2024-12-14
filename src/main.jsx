@@ -3,20 +3,22 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
-import SalesOrderList from "./components/SaleOrderList";
+import SalesOrderList from "./Pages/SaleOrderList";
+import Dashboard from "./Pages/Dashboard";
 import Home from "./Pages/Home";
 import Provider from "./Provider";
+import Parchase from "./Pages/Parchase";
+import Inventory from "./Pages/Inventroy";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <App />,
 		children: [
-			// {
-			// 	index: true,
-			// 	element: <Home />,
-			// },
+			{
+				path: "/Purchase",
+				element: <Parchase />,
+			},
 			{
 				path: "/Dashboard",
 				element: <Dashboard />,
@@ -24,6 +26,10 @@ const router = createBrowserRouter([
 			{
 				path: "/Sales-Order",
 				element: <SalesOrderList />,
+			},
+			{
+				path: "/Inventory",
+				element: <Inventory />,
 			},
 		],
 	},
