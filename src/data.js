@@ -13,7 +13,7 @@ export const item = [
         "detailRemark": "Good Testing",
         "detailCreatedOn": "2024-09-06T14:01:43+06:30[Asia/Yangon]",
         "displayName": "blue/1",
-        "stockQty": 15,
+        "quantity": 15,
         "sellQuantity": 5,
         "description": "This is the third product.",
         "buyerFirstName": "Sithu Soe",
@@ -34,6 +34,7 @@ export const item = [
         "townshipNameAlias": "Ahlone",
         "townshipGuid": "1f06a524-05f2-420a-ad87-fa812ffd5104",
         "townshipNameMM": "အလုံ",
+        "name": "lemon",
 
     },
     {
@@ -42,6 +43,8 @@ export const item = [
         "buyerFirstName": "Amon Soe",
         "townshipNameAlias": "Yankin",
         "sellQuantity": 5,
+        "quantity": 32,
+        "name": "orange",
     },
     {
         "id": 3,
@@ -49,6 +52,8 @@ export const item = [
         "buyerFirstName": "Blue",
         "townshipNameAlias": "Magay",
         "sellQuantity": 8,
+        "quantity": 22,
+        "name": "watermelon",
     },
     {
         "id": 4,
@@ -56,6 +61,8 @@ export const item = [
         "buyerFirstName": "Yellow",
         "townshipNameAlias": "kachin",
         "sellQuantity": 20,
+        "quantity": 8,
+        "name": "apple",
     },
     {
         "id": 5,
@@ -63,5 +70,7 @@ export const item = [
         "buyerFirstName": "white",
         "townshipNameAlias": "Rhaine",
         "sellQuantity": 2,
+        "quantity": 10,
+        "name": "grape",
     }
 ]

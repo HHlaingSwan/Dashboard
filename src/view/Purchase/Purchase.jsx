@@ -18,8 +18,9 @@ import {
 } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import { DateTime } from "luxon";
-import { DataContext } from "../Context/DataContext";
-const Inventroy = () => {
+import { DataContext } from "../../Context/DataContext";
+import { NavLink } from "react-router-dom";
+const Purchase = () => {
 	const { data } = useContext(DataContext);
 
 	// States for filtering, pagination, sorting, and search
@@ -104,6 +105,7 @@ const Inventroy = () => {
 				overflow: "hidden", // Prevent scrolling
 				display: "flex",
 				flexDirection: "column",
+				width: "100%",
 			}}>
 			<Typography
 				variant='h5'
@@ -133,7 +135,9 @@ const Inventroy = () => {
 						color: "#fff",
 						textTransform: "none",
 						padding: "8px 16px",
-					}}>
+					}}
+					component={NavLink}
+					to='/create-order'>
 					Create New Order
 				</Button>
 				<div style={{ display: "flex", gap: "15px" }}>
@@ -244,10 +248,10 @@ const Inventroy = () => {
 									{order.status}
 								</TableCell>
 								<TableCell style={{ textAlign: "center" }}>
-									{order.buyerFirstName || "N/A"}
+									{order.buyerFirstName || "--"}
 								</TableCell>
 								<TableCell style={{ textAlign: "center" }}>
-									{order.townshipNameAlias || "N/A"}
+									{order.townshipNameAlias || "--"}
 								</TableCell>
 
 								<TableCell style={{ textAlign: "center" }}>
@@ -255,24 +259,24 @@ const Inventroy = () => {
 										<>
 											<LinearProgress
 												variant='determinate'
-												value={(order.quantity / (order.stockQty || 1)) * 100}
+												value={(order.quantity / order.sellQuantity) * 100}
 												sx={{ height: 10, borderRadius: 5 }}
 											/>
 											<Typography
 												variant='body2'
 												style={{ textAlign: "center", marginTop: "5px" }}>
-												{`${order.quantity} of ${order.stockQty || 1}`}
+												{`${order.quantity} of ${order.sellQuantity}`}
 											</Typography>
 										</>
 									) : (
-										<Typography variant='body2'>N/A</Typography>
+										<Typography variant='body2'>--</Typography>
 									)}
 								</TableCell>
 								<TableCell style={{ textAlign: "center" }}>
-									{order.price || "N/A"}
+									{order.price || "--"}
 								</TableCell>
 								<TableCell style={{ textAlign: "center" }}>
-									{order.pageName || "N/A"}
+									{order.pageName || "--"}
 								</TableCell>
 								<TableCell style={{ textAlign: "center" }}>
 									{DateTime.fromISO(order.createdOn || "").toLocaleString(
@@ -318,4 +322,4 @@ const Inventroy = () => {
 	);
 };
 
-export default Inventroy;
+export default Purchase;

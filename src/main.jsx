@@ -3,12 +3,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import SalesOrderList from "./Pages/SaleOrderList";
-import Dashboard from "./Pages/Dashboard";
 import Home from "./Pages/Home";
-import Provider from "./Provider";
-import Parchase from "./Pages/Parchase";
-import Inventory from "./Pages/Inventroy";
+import Dashboard from "./view/Dashboard/Dashboard";
+import Inventory from "./view/Inventroy/Inventroy";
+import Purchase from "./view/Purchase/Purchase";
+import SalesOrderList from "./Pages/SaleOrderList";
+import CreateOrderForm from "./view/Purchase/CreateOrderFrom";
+import Provider from "./Context/DataContext";
 
 const router = createBrowserRouter([
 	{
@@ -16,8 +17,12 @@ const router = createBrowserRouter([
 		element: <App />,
 		children: [
 			{
+				index: true,
+				element: <Home />,
+			},
+			{
 				path: "/Purchase",
-				element: <Parchase />,
+				element: <Purchase />,
 			},
 			{
 				path: "/Dashboard",
@@ -30,6 +35,10 @@ const router = createBrowserRouter([
 			{
 				path: "/Inventory",
 				element: <Inventory />,
+			},
+			{
+				path: "create-order",
+				element: <CreateOrderForm />,
 			},
 		],
 	},

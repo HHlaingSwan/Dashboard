@@ -1,10 +1,10 @@
 import React from "react";
-import Home from "./Pages/Home";
+import SideNavBar from "./Demo/SideNavBar";
 
 const App = () => {
 	return (
 		<>
-			<Home />
+			<SideNavBar />
 		</>
 	);
 };

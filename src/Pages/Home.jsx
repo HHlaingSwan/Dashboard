@@ -1,10 +1,9 @@
 import React from "react";
-import SideNavBar from "../Demo/SideNavBar";
-
+import Inventory from "../view/Inventroy/Inventroy";
 const Home = () => {
 	return (
 		<>
-			<SideNavBar />
+			<Inventory />
 		</>
 	);
 };
