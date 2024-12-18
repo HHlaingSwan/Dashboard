@@ -19,8 +19,9 @@ import {
 import Pagination from "@mui/material/Pagination";
 import { DateTime } from "luxon";
 import { DataContext } from "../../Context/DataContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 const Purchase = () => {
+	const navigate = useNavigate();
 	const { data } = useContext(DataContext);
 
 	// States for filtering, pagination, sorting, and search
@@ -96,6 +97,10 @@ const Purchase = () => {
 		setSortConfig({ key: column, direction });
 	};
 
+	const handleRowClick = (order) => {
+		// Navigate to the detail page, passing the order as state
+		navigate(`/purchase/${order.salesId}`, { state: { order } });
+	};
 	return (
 		<div
 			style={{
@@ -217,6 +222,7 @@ const Purchase = () => {
 						{paginatedData.map((order, index) => (
 							<TableRow
 								key={`${order.id}-${index}`}
+								onClick={() => handleRowClick(order)} // Pass the entire order object
 								style={{
 									backgroundColor: "#fff",
 									transition: "background-color 0.3s ease",
@@ -253,19 +259,18 @@ const Purchase = () => {
 								<TableCell style={{ textAlign: "center" }}>
 									{order.townshipNameAlias || "--"}
 								</TableCell>
-
 								<TableCell style={{ textAlign: "center" }}>
 									{order.quantity > 0 ? (
 										<>
 											<LinearProgress
 												variant='determinate'
-												value={(order.quantity / order.sellQuantity) * 100}
+												value={(order.sellQuantity / order.quantity) * 100}
 												sx={{ height: 10, borderRadius: 5 }}
 											/>
 											<Typography
 												variant='body2'
 												style={{ textAlign: "center", marginTop: "5px" }}>
-												{`${order.quantity} of ${order.sellQuantity}`}
+												{`${order.sellQuantity} of ${order.quantity}`}
 											</Typography>
 										</>
 									) : (

@@ -10,6 +10,11 @@ import Purchase from "./view/Purchase/Purchase";
 import SalesOrderList from "./Pages/SaleOrderList";
 import CreateOrderForm from "./view/Purchase/CreateOrderFrom";
 import Provider from "./Context/DataContext";
+import Detail from "./view/Purchase/_components/Detail";
+import Reveice from "./view/Purchase/_components/Receive";
+import Edit from "./view/Purchase/_components/Edit";
+import CRUDorder from "./view/Purchase/_components/CRUDorder";
+import Payment from "./view/Purchase/_components/Payment";
 
 const router = createBrowserRouter([
 	{
@@ -39,6 +44,32 @@ const router = createBrowserRouter([
 			{
 				path: "create-order",
 				element: <CreateOrderForm />,
+			},
+			{
+				path: "/Purchase/:id/", // Parent route
+				element: <CRUDorder />,
+				children: [
+					{
+						index: true, // Default route
+						element: <Detail />,
+					},
+					{
+						path: "/Purchase/:id/detail", // Child route
+						element: <Detail />,
+					},
+					{
+						path: "/Purchase/:id/receive", // Child route
+						element: <Reveice />,
+					},
+					{
+						path: "/Purchase/:id/edit", // Child route
+						element: <Edit />,
+					},
+					{
+						path: "/Purchase/:id/payment", // Child route
+						element: <Payment />,
+					},
+				],
 			},
 		],
 	},

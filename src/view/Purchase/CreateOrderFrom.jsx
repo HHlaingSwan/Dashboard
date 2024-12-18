@@ -102,11 +102,6 @@ export default function CreateOrderForm() {
 			return;
 		}
 
-		if (additionalCost.some((cost) => cost.amount <= 0)) {
-			alert("Additional costs must have valid positive amounts.");
-			return;
-		}
-
 		if (!currency) {
 			alert("Please select a valid currency.");
 			return;
@@ -133,7 +128,7 @@ export default function CreateOrderForm() {
 	const handleItemChange = (index, field, value) => {
 		const updatedItems = [...items];
 		if (field === "cost" || field === "quantity") {
-			const numericValue = Math.max(Number(value), 1); // Ensure at least 1
+			const numericValue = Number(value); // Ensure positive value
 			updatedItems[index][field] = numericValue;
 			updatedItems[index].amount =
 				updatedItems[index].cost * updatedItems[index].quantity || 0;
@@ -154,7 +149,7 @@ export default function CreateOrderForm() {
 	const handleAdditionalCostChange = (index, field, value) => {
 		const updatedCosts = [...additionalCost];
 		if (field === "amount") {
-			const numericValue = Math.max(Number(value), 1); // Ensure positive value
+			const numericValue = Number(value); // Ensure positive value
 			updatedCosts[index][field] = numericValue;
 		} else {
 			updatedCosts[index][field] = value;
@@ -171,7 +166,7 @@ export default function CreateOrderForm() {
 		if (selectedFruit && !items.some((item) => item.name === selectedFruit)) {
 			setItems([
 				...items,
-				{ name: selectedFruit, cost: 1, quantity: 1, amount: 1 },
+				{ name: selectedFruit, cost: "", quantity: "", amount: "" },
 			]);
 		}
 		setFruitInput("");
@@ -305,11 +300,13 @@ export default function CreateOrderForm() {
 												type='number'
 												value={item.cost || ""} // Avoid showing 0 if the cost is 0
 												onChange={(e) => {
-													const value = Math.max(+e.target.value, 1); // Ensure value is at least 1
+													const value = Math.max(Number(e.target.value), 0); // Ensure value is non-negative
 													handleItemChange(index, "cost", value);
 												}}
 												size='small'
-												inputProps={{ min: 1 }} // Set minimum value to 1
+												inputProps={{
+													min: 0, // Prevent user from manually typing negative values
+												}}
 											/>
 										</TableCell>
 										<TableCell>
@@ -317,11 +314,13 @@ export default function CreateOrderForm() {
 												type='number'
 												value={item.quantity || ""} // Avoid showing 0 if the quantity is 0
 												onChange={(e) => {
-													const value = Math.max(+e.target.value, 1); // Ensure value is at least 1
+													const value = Math.max(Number(e.target.value), 0); // Ensure value is non-negative
 													handleItemChange(index, "quantity", value);
 												}}
 												size='small'
-												inputProps={{ min: 1 }} // Set minimum value to 1
+												inputProps={{
+													min: 0, // Prevent user from manually typing negative values
+												}}
 											/>
 										</TableCell>
 
@@ -417,14 +416,15 @@ export default function CreateOrderForm() {
 							<TextField
 								label='Amount'
 								type='number'
-								value={cost.amount}
+								value={cost.amount || ""} // Display an empty string if the value is null/undefined
 								onChange={(e) => {
-									const value = Math.max(Number(e.target.value), 1);
+									const value = Math.max(Number(e.target.value), 0); // Ensure value is non-negative
 									handleAdditionalCostChange(index, "amount", value);
 								}}
 								size='small'
-								inputProps={{ min: 1 }}
-								error={cost.amount <= 0}
+								inputProps={{
+									min: 0, // Prevent user from manually typing negative values
+								}}
 							/>
 
 							<IconButton
